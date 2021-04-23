@@ -13,7 +13,7 @@
     <changeSet author="Diego Acosta" id="script01">
         <createTable tableName="com_companies">
             <column name="id" type="UUID">
-                <constraints primaryKey="true" primaryKeyName="users_pkey"/>
+                <constraints primaryKey="true" primaryKeyName="company_pkey"/>
             </column>
             <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="false"/>
@@ -24,9 +24,60 @@
             <column name="identification" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="active" defaultValue="true" type="boolean">
+            <column name="status" defaultValue="ACT" type="VARCHAR(3)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet author="Diego Acosta" id="script02">
+        <createTable tableName="sec_users">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nick" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" defaultValue="true" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="sec_roles">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" defaultValue="true" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="user_rol">
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rol_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user_rol" columnNames="user_id,rol_id"/>
+        <addForeignKeyConstraint baseTableName="user_rol" baseColumnNames="user_id"
+                                 constraintName="fk_user_id_roles"
+                                 referencedTableName="sec_users" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="user_rol" baseColumnNames="rol_id"
+                                 constraintName="fk_rol_id_users"
+                                 referencedTableName="sec_roles" referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
