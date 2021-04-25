@@ -1,9 +1,9 @@
 package com.backen.multicommerce.controller;
 
-import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.presenter.CompanyPresenter;
 import com.backen.multicommerce.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +30,10 @@ public class CompanyController {
         companyService.deleteById(UUID.fromString(id));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping("/companies")
-    public CompanyPresenter saveCompany(@RequestBody Company company){
-        return companyService.save(company);
+    public CompanyPresenter saveCompany(@RequestBody CompanyPresenter companyPresenter){
+        return companyService.save(companyPresenter);
     }
 
 }

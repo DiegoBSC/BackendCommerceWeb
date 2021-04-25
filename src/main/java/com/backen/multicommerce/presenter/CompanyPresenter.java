@@ -1,5 +1,6 @@
 package com.backen.multicommerce.presenter;
 
+import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.*;
 
 import java.util.Date;
@@ -15,5 +16,5 @@ public class CompanyPresenter {
     private Date createdDate;
     private String nameCompany;
     private String identification;
-    private Boolean active;
+    private EnumStatusGeneral status;
 }

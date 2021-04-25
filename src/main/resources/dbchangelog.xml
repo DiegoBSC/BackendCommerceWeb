@@ -49,7 +49,7 @@
             <column name="password" type="VARCHAR(500)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" defaultValue="true" type="VARCHAR(3)">
+            <column name="status" defaultValue="ACT" type="VARCHAR(3)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -60,7 +60,7 @@
             <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" defaultValue="true" type="VARCHAR(3)">
+            <column name="status" defaultValue="ACT" type="VARCHAR(3)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

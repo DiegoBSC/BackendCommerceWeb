@@ -7,6 +7,7 @@ import com.backen.multicommerce.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,10 +37,11 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public CompanyPresenter save(Company company) {
+    public CompanyPresenter save(CompanyPresenter companyPresenter) {
+        Company company = getCompanyFromCompanyPresenter(companyPresenter);
         Company companySave = companyRepository.save(company);
-        CompanyPresenter companyPresenter = getCompanyPresenterFromCompany(companySave);
-        return companyPresenter;
+        CompanyPresenter companyPresenterResult = getCompanyPresenterFromCompany(companySave);
+        return companyPresenterResult;
     }
 
     @Override
@@ -51,9 +53,19 @@ public class CompanyServiceImp implements CompanyService {
         return CompanyPresenter.builder()
                         .nameCompany(company.getNameCompany())
                         .id(company.getId())
-                        .active(company.getActive())
+                        .status(company.getStatus())
                         .createdDate(company.getCreatedDate())
                         .identification(company.getIdentification())
                         .build();
+    }
+
+    public Company getCompanyFromCompanyPresenter(CompanyPresenter companyPresenter){
+        return Company.builder()
+                .nameCompany(companyPresenter.getNameCompany())
+                .id(companyPresenter.getId())
+                .status(companyPresenter.getStatus())
+                .createdDate(companyPresenter.getCreatedDate() == null ? new Date() : companyPresenter.getCreatedDate())
+                .identification(companyPresenter.getIdentification())
+                .build();
     }
 }

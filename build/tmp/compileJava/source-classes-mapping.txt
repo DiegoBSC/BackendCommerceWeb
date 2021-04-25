@@ -1,60 +1,60 @@
 com/backen/multicommerce/service/CompanyService.java
  com.backen.multicommerce.service.CompanyService
-com/backen/multicommerce/security/repository/UserRepository.java
- com.backen.multicommerce.security.repository.UserRepository
+com/backen/multicommerce/security/entity/PrimaryUser.java
+ com.backen.multicommerce.security.entity.PrimaryUser
+ com.backen.multicommerce.security.entity.PrimaryUser$PrimaryUserBuilder
 com/backen/multicommerce/enums/EnumStatusGeneral.java
  com.backen.multicommerce.enums.EnumStatusGeneral
 com/backen/multicommerce/security/presenter/LoginUserPresenter.java
  com.backen.multicommerce.security.presenter.LoginUserPresenter
  com.backen.multicommerce.security.presenter.LoginUserPresenter$LoginUserPresenterBuilder
-com/backen/multicommerce/presenter/CompanyPresenter.java
- com.backen.multicommerce.presenter.CompanyPresenter
- com.backen.multicommerce.presenter.CompanyPresenter$CompanyPresenterBuilder
-com/backen/multicommerce/presenter/MessagePresenter.java
- com.backen.multicommerce.presenter.MessagePresenter
-com/backen/multicommerce/repository/CompanyRepository.java
- com.backen.multicommerce.repository.CompanyRepository
+com/backen/multicommerce/security/service/imp/UserDetailServiceImp.java
+ com.backen.multicommerce.security.service.imp.UserDetailServiceImp
+com/backen/multicommerce/security/entity/User.java
+ com.backen.multicommerce.security.entity.User
+ com.backen.multicommerce.security.entity.User$UserBuilder
+com/backen/multicommerce/security/presenter/JwtPresenter.java
+ com.backen.multicommerce.security.presenter.JwtPresenter
+ com.backen.multicommerce.security.presenter.JwtPresenter$JwtPresenterBuilder
 com/backen/multicommerce/enums/EnumRol.java
  com.backen.multicommerce.enums.EnumRol
-com/backen/multicommerce/entity/Company.java
- com.backen.multicommerce.entity.Company
- com.backen.multicommerce.entity.Company$CompanyBuilder
-com/backen/multicommerce/security/service/RolService.java
- com.backen.multicommerce.security.service.RolService
+com/backen/multicommerce/security/service/UserService.java
+ com.backen.multicommerce.security.service.UserService
+com/backen/multicommerce/security/presenter/UserPresenter.java
+ com.backen.multicommerce.security.presenter.UserPresenter
+ com.backen.multicommerce.security.presenter.UserPresenter$UserPresenterBuilder
 com/backen/multicommerce/security/jwt/JwtEntryPoint.java
  com.backen.multicommerce.security.jwt.JwtEntryPoint
-com/backen/multicommerce/controller/CompanyController.java
- com.backen.multicommerce.controller.CompanyController
+com/backen/multicommerce/security/entity/Rol.java
+ com.backen.multicommerce.security.entity.Rol
+ com.backen.multicommerce.security.entity.Rol$RolBuilder
 com/backen/multicommerce/service/imp/CompanyServiceImp.java
  com.backen.multicommerce.service.imp.CompanyServiceImp
-com/backen/multicommerce/security/jwt/JwtProvider.java
- com.backen.multicommerce.security.jwt.JwtProvider
+com/backen/multicommerce/security/repository/UserRepository.java
+ com.backen.multicommerce.security.repository.UserRepository
 com/backen/multicommerce/security/repository/RolRepository.java
  com.backen.multicommerce.security.repository.RolRepository
 com/backen/multicommerce/MulticommerceApplication.java
  com.backen.multicommerce.MulticommerceApplication
-com/backen/multicommerce/security/presenter/JwtPresenter.java
- com.backen.multicommerce.security.presenter.JwtPresenter
- com.backen.multicommerce.security.presenter.JwtPresenter$JwtPresenterBuilder
-com/backen/multicommerce/security/entity/Rol.java
- com.backen.multicommerce.security.entity.Rol
- com.backen.multicommerce.security.entity.Rol$RolBuilder
-com/backen/multicommerce/security/presenter/UserPresenter.java
- com.backen.multicommerce.security.presenter.UserPresenter
- com.backen.multicommerce.security.presenter.UserPresenter$UserPresenterBuilder
-com/backen/multicommerce/security/controller/AuthController.java
- com.backen.multicommerce.security.controller.AuthController
-com/backen/multicommerce/security/jwt/JwtTokenFilter.java
- com.backen.multicommerce.security.jwt.JwtTokenFilter
+com/backen/multicommerce/repository/CompanyRepository.java
+ com.backen.multicommerce.repository.CompanyRepository
+com/backen/multicommerce/entity/Company.java
+ com.backen.multicommerce.entity.Company
+ com.backen.multicommerce.entity.Company$CompanyBuilder
 com/backen/multicommerce/security/MainSecurity.java
  com.backen.multicommerce.security.MainSecurity
-com/backen/multicommerce/security/service/UserService.java
- com.backen.multicommerce.security.service.UserService
-com/backen/multicommerce/security/entity/User.java
- com.backen.multicommerce.security.entity.User
- com.backen.multicommerce.security.entity.User$UserBuilder
-com/backen/multicommerce/security/service/imp/UserDetailServiceImp.java
- com.backen.multicommerce.security.service.imp.UserDetailServiceImp
-com/backen/multicommerce/security/entity/PrimaryUser.java
- com.backen.multicommerce.security.entity.PrimaryUser
- com.backen.multicommerce.security.entity.PrimaryUser$PrimaryUserBuilder
+com/backen/multicommerce/presenter/MessagePresenter.java
+ com.backen.multicommerce.presenter.MessagePresenter
+com/backen/multicommerce/presenter/CompanyPresenter.java
+ com.backen.multicommerce.presenter.CompanyPresenter
+ com.backen.multicommerce.presenter.CompanyPresenter$CompanyPresenterBuilder
+com/backen/multicommerce/security/service/RolService.java
+ com.backen.multicommerce.security.service.RolService
+com/backen/multicommerce/security/controller/AuthController.java
+ com.backen.multicommerce.security.controller.AuthController
+com/backen/multicommerce/security/jwt/JwtProvider.java
+ com.backen.multicommerce.security.jwt.JwtProvider
+com/backen/multicommerce/security/jwt/JwtTokenFilter.java
+ com.backen.multicommerce.security.jwt.JwtTokenFilter
+com/backen/multicommerce/controller/CompanyController.java
+ com.backen.multicommerce.controller.CompanyController

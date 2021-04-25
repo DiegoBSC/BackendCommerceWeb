@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtProvider {
@@ -25,6 +26,8 @@ public class JwtProvider {
         return Jwts.builder().setSubject(primaryUser.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + expiration * 1000))
+                .claim("userName", primaryUser.getName())
+                .claim("emailUser", primaryUser.getEmail())
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 

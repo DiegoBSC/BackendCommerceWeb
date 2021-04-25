@@ -1,6 +1,5 @@
 package com.backen.multicommerce.service;
 
-import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.presenter.CompanyPresenter;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface CompanyService {
 
     CompanyPresenter findById(UUID id);
 
-    CompanyPresenter save(Company company);
+    CompanyPresenter save(CompanyPresenter companyPresenter);
 
     void deleteById(UUID id);
 }

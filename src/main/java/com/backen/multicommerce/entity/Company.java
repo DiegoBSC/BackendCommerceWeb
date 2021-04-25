@@ -1,5 +1,6 @@
 package com.backen.multicommerce.entity;
 
+import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class Company {
     @NotNull
     private String identification;
     @NotNull
-    private Boolean active;
+    @Enumerated(EnumType.STRING)
+    private EnumStatusGeneral status;
 
 }

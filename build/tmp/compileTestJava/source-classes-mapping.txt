@@ -1,2 +1,0 @@
-com/backen/multicommerce/MulticommerceApplicationTests.java
- com.backen.multicommerce.MulticommerceApplicationTests
