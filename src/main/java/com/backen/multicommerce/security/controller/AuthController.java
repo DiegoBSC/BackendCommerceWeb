@@ -34,7 +34,7 @@ public class AuthController {
     JwtProvider jwtProvider;
 
     @PostMapping("/createUser")
-    public ResponseEntity<?> saveUser(@Valid @RequestBody UserPresenter userPresenter, BindingResult bindingResult) {
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserPresenter userPresenter, BindingResult bindingResult) throws Exception {
         // BindingResult es lo que maneja los posibles errores del objeto  @NotNull, @NotBlank, etc
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos invalidos"), HttpStatus.BAD_REQUEST);

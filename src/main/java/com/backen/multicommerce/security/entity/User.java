@@ -35,11 +35,13 @@ public class User {
     @NotNull
     private String password;
     @NotNull
-    @NotNull
     @Enumerated(EnumType.STRING)
     private EnumStatusGeneral status;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_rol", joinColumns= @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles;
+    public User(UUID id) {
+        this.id = id;
+    }
 }

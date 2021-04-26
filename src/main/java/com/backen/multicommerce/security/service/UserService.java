@@ -11,10 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -41,7 +38,7 @@ public class UserService {
         return userRepository.existsByEmail(userEmail);
     }
 
-    public void save(UserPresenter userPresenter){
+    public void save(UserPresenter userPresenter) throws Exception {
         User user = User.builder()
                 .email(userPresenter.getEmail())
                 .name(userPresenter.getName())
@@ -52,11 +49,22 @@ public class UserService {
 
                 .build();
         Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolName(EnumRol.ROLE_USER).get());
         if(userPresenter.getRoles().contains("admin"))
             roles.add(rolService.getByRolName(EnumRol.ROLE_ADMIN).get());
+        if(userPresenter.getRoles().contains("super"))
+            roles.add(rolService.getByRolName(EnumRol.ROLE_SUPER).get());
+        if(userPresenter.getRoles().contains("customer"))
+            roles.add(rolService.getByRolName(EnumRol.ROLE_CUSTOMER).get());
+        if(userPresenter.getRoles().contains("user"))
+            roles.add(rolService.getByRolName(EnumRol.ROLE_USER).get());
+        if(roles.isEmpty())
+            throw new Exception("El usuario debe tener al menos un rol");
         user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    public Optional<User>  findById(UUID userId){
+        return userRepository.findById(userId);
     }
 
 }
