@@ -26,7 +26,7 @@ public class Catalog {
     @Temporal(TemporalType.DATE)
     private Date createdDate;
     @Temporal(TemporalType.DATE)
-    private Date updatedDate;
+    private Date updateDate;
     @NotNull
     @Column(unique = true)
     private String name;

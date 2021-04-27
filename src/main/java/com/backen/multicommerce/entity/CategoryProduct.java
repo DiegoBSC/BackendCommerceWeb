@@ -2,6 +2,7 @@ package com.backen.multicommerce.entity;
 
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "pro_category_product")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryProduct {

@@ -1,7 +1,6 @@
 package com.backen.multicommerce.controller;
 
 import com.backen.multicommerce.presenter.CatalogPresenter;
-import com.backen.multicommerce.presenter.CompanyPresenter;
 import com.backen.multicommerce.presenter.MessagePresenter;
 import com.backen.multicommerce.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +23,15 @@ public class CatalogController {
     @Autowired
     CatalogService catalogService;
 
-
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
     @PostMapping("/create")
     public ResponseEntity<?> saveCatalog(@Valid @RequestBody CatalogPresenter catalogPresenter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (catalogService.existsByNameCatalog(catalogPresenter.getName()))
-            return new ResponseEntity(new MessagePresenter("La empresa ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("El catalogo ya existe"), HttpStatus.BAD_REQUEST);
         catalogService.save(catalogPresenter);
-        return new ResponseEntity(new MessagePresenter("El empresa fue guardada"), HttpStatus.CREATED);
+        return new ResponseEntity(new MessagePresenter("El catalogo fue guardado"), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
@@ -43,7 +41,7 @@ public class CatalogController {
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         CatalogPresenter catalogPresenter = catalogService.findById(UUID.fromString(catalogId));
         if(catalogPresenter == null)
-            return new ResponseEntity(new MessagePresenter("Error: Empresa no encontrada"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(catalogPresenter, HttpStatus.OK);
     }
 

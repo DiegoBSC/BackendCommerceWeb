@@ -1,19 +1,23 @@
 package com.backen.multicommerce.service.imp;
 
 import com.backen.multicommerce.entity.Catalog;
+import com.backen.multicommerce.entity.CategoryProduct;
 import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import com.backen.multicommerce.presenter.CatalogPresenter;
+import com.backen.multicommerce.presenter.CategoryProductPresenter;
 import com.backen.multicommerce.repository.CatalogRepository;
 import com.backen.multicommerce.repository.CompanyRepository;
 import com.backen.multicommerce.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class CatalogServiceImp implements CatalogService {
 
     @Autowired
@@ -32,8 +36,12 @@ public class CatalogServiceImp implements CatalogService {
 
     @Override
     public CatalogPresenter findById(UUID id) {
-       return catalogRepository.findById(id).stream().map((e)->getCatalogPresenterFromCatalog(e)
-       ).collect(Collectors.toList()).get(0);
+        CatalogPresenter catalogPresenter = null;
+        Catalog catalog = catalogRepository.findById(id).orElse(null);
+        if(catalog != null){
+            catalogPresenter = getCatalogPresenterFromCatalog(catalog);
+        }
+        return catalogPresenter;
     }
 
     @Override
@@ -42,7 +50,10 @@ public class CatalogServiceImp implements CatalogService {
         Catalog catalog = getCatalogFromCatalogPresenter(catalogPresenter);
         catalog.setCompany(company);
         catalog.setStatus(EnumStatusGeneral.ACT);
-        catalog.setCreatedDate(new Date());
+        if(catalogPresenter.getId() == null){
+            catalog.setCreatedDate(new Date());
+        }
+        catalog.setUpdateDate(new Date());
         Catalog catalogSave = catalogRepository.save(catalog);
         CatalogPresenter catalogPresenterResult = getCatalogPresenterFromCatalog(catalogSave);
         return catalogPresenterResult;
@@ -53,7 +64,7 @@ public class CatalogServiceImp implements CatalogService {
         Catalog catalog =  catalogRepository.findById(UUID.fromString(id)).get();
         if(catalog == null)
             throw new Exception("El catálogo no fue encontrado");
-        catalog.setUpdatedDate(new Date());
+        catalog.setUpdateDate(new Date());
         catalog.setStatus(EnumStatusGeneral.INA);
         catalog.setName(catalog.getName().concat("-INA"));
         catalogRepository.save(catalog);

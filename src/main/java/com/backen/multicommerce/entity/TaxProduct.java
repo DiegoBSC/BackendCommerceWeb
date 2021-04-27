@@ -2,6 +2,7 @@ package com.backen.multicommerce.entity;
 
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TaxProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
