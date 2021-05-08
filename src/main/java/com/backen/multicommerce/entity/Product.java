@@ -2,6 +2,7 @@ package com.backen.multicommerce.entity;
 
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,4 +45,7 @@ public class Product {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tax_product_id", referencedColumnName = "id")
     private TaxProduct taxProduct;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "companyId", referencedColumnName = "id")
+    private Company company;
 }

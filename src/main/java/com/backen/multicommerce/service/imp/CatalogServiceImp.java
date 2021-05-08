@@ -1,11 +1,9 @@
 package com.backen.multicommerce.service.imp;
 
 import com.backen.multicommerce.entity.Catalog;
-import com.backen.multicommerce.entity.CategoryProduct;
 import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import com.backen.multicommerce.presenter.CatalogPresenter;
-import com.backen.multicommerce.presenter.CategoryProductPresenter;
 import com.backen.multicommerce.repository.CatalogRepository;
 import com.backen.multicommerce.repository.CompanyRepository;
 import com.backen.multicommerce.service.CatalogService;
@@ -101,6 +99,11 @@ public class CatalogServiceImp implements CatalogService {
     @Override
     public List<CatalogPresenter> findAllByCompanyId(String companyId) {
         List<Catalog> list = (List<Catalog>) catalogRepository.findByCompany(new Company(UUID.fromString(companyId)));
+        list.forEach(catalog -> {
+            catalog.getProducts().forEach(product -> {
+                product.setCompany(null);
+            });
+        });
         return list.stream().map( (e)->
                 getCatalogPresenterFromCatalog(e)
         ).collect(Collectors.toList());
