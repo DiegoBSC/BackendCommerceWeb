@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -67,4 +68,19 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public UserPresenter getByNickPresenter(String userNick){
+        User user = userRepository.findByNick(userNick).get();
+
+        Set<String> listRoles = new HashSet<>();
+
+        user.getRoles().forEach(rol ->{
+            listRoles.add(rol.getName().name());
+        });
+
+        return UserPresenter.builder()
+                .nick(user.getNick())
+                .email(user.getEmail())
+                .roles(listRoles)
+                .build();
+    }
 }

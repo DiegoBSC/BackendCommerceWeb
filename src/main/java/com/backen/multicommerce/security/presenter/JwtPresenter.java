@@ -18,5 +18,6 @@ public class JwtPresenter {
     private String token;
     private String bearer;
     private String nick;
+    private String email;
     private Collection<? extends GrantedAuthority> authorities;
 }

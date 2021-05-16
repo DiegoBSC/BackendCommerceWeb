@@ -18,9 +18,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/public/api")
 @CrossOrigin
 public class AuthController {
 
@@ -60,6 +62,12 @@ public class AuthController {
                 .authorities(userDetails.getAuthorities())
                 .build();
         return new ResponseEntity(jwtPresenter, HttpStatus.OK);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UserPresenter> getInfoUser(@NotNull @RequestParam String nick ){
+        UserPresenter userPresenter = userService.getByNickPresenter(nick);
+        return new ResponseEntity(userPresenter, HttpStatus.OK);
     }
 
 }

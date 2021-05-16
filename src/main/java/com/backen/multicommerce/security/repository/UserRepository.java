@@ -1,6 +1,7 @@
 package com.backen.multicommerce.security.repository;
 
 import com.backen.multicommerce.security.entity.User;
+import com.backen.multicommerce.security.presenter.UserPresenter;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

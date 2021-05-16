@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/typeProduct")
+@RequestMapping("/api/typeProduct")
 @CrossOrigin
 public class TypeController {
     
