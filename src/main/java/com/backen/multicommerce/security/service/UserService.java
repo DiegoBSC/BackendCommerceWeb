@@ -78,6 +78,7 @@ public class UserService {
         });
 
         return UserPresenter.builder()
+                .id(user.getId())
                 .nick(user.getNick())
                 .email(user.getEmail())
                 .roles(listRoles)

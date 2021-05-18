@@ -19,7 +19,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    show-sql: false
+    show-sql: true
   liquibase:
     enabled: true
     change-log: classpath:dbchangelog.xml

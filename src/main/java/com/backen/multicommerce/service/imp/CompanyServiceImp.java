@@ -7,11 +7,17 @@ import com.backen.multicommerce.repository.CompanyRepository;
 import com.backen.multicommerce.security.entity.User;
 import com.backen.multicommerce.security.service.UserService;
 import com.backen.multicommerce.service.CompanyService;
+import com.backen.multicommerce.utils.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,11 +39,17 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public List<CompanyPresenter> findAllByUserId(String userId) {
-        List<Company> list = (List<Company>) companyRepository.findByUser(new User(UUID.fromString(userId)));
-        return list.stream().map( (e)->
+    public Paginator findCompanyFilter(Integer page, Integer size, String mainFilter, String userId) {
+        Pageable paging = PageRequest.of(page, size, Sort.by("nameCompany"));
+
+        Page<Company> listQuery = companyRepository.findByFilters(userId != null ? UUID.fromString(userId): null , mainFilter, paging);
+
+        List<CompanyPresenter> listPresenter =  listQuery.getContent().stream().map( (e)->
                 getCompanyPresenterFromCompany(e)
         ).collect(Collectors.toList());
+
+        Paginator paginator = new Paginator(listQuery.getTotalPages(), listQuery.getTotalElements(), Set.of(listPresenter));
+        return paginator;
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.backen.multicommerce.controller;
 import com.backen.multicommerce.presenter.CompanyPresenter;
 import com.backen.multicommerce.presenter.MessagePresenter;
 import com.backen.multicommerce.service.CompanyService;
+import com.backen.multicommerce.utils.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,11 +48,12 @@ public class CompanyController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
-    @GetMapping("/findAllByUser")
-    public ResponseEntity<?> findCompanyAllByUser(@NotNull @RequestParam String userId) {
-        if (userId == null)
-            return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        List<CompanyPresenter> listResult = companyService.findAllByUserId(userId);
+    @GetMapping("/list")
+    public ResponseEntity<?> findCompanyAllByUser(@NotNull @RequestParam Integer page,
+                                                  @NotNull @RequestParam Integer size,
+                                                  @RequestParam(required = false) String mainFilter,
+                                                  @RequestParam(required = false) String userId) {
+        Paginator listResult = companyService.findCompanyFilter(page, size, mainFilter, userId);
         if(listResult == null)
             return new ResponseEntity(new MessagePresenter("Error: Empresa no encontrada"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);

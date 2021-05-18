@@ -7,10 +7,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
 public class UserPresenter {
+    @NotBlank
+    private UUID id;
     @NotBlank
     private String name;
     @NotBlank
