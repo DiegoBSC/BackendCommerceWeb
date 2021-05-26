@@ -12,12 +12,15 @@ import java.util.UUID;
 
 public interface CompanyRepository extends CrudRepository<Company, UUID> {
 
+    Boolean existsByNameCompanyAndId(String nameCompany, UUID id);
+
     Boolean existsByNameCompany(String nameCompany);
 
     List<Company> findByUser(User user);
 
     @Query("SELECT c FROM Company c " +
     "where cast(c.user.id as string)  = coalesce(cast(:userId as string), cast(c.user.id as string)) " +
+    "and c.status = 'ACT'" +
     "and ((cast(UPPER(c.nameCompany) as string) like " +
             "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(c.nameCompany as string)))) " +
     "or (cast(UPPER(c.identification) as string) like " +

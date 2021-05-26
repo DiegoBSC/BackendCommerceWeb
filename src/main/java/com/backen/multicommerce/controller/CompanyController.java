@@ -30,7 +30,7 @@ public class CompanyController {
     public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyPresenter companyPresenter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        if (companyService.existsByNameCompany(companyPresenter.getNameCompany()))
+        if (!companyService.existsByNameCompany(companyPresenter.getNameCompany(), companyPresenter.getId()))
             return new ResponseEntity(new MessagePresenter("La empresa ya existe"), HttpStatus.BAD_REQUEST);
         companyService.save(companyPresenter);
         return new ResponseEntity(new MessagePresenter("El empresa fue guardada"), HttpStatus.CREATED);
@@ -67,8 +67,8 @@ public class CompanyController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
-    @GetMapping("/delete")
-    public void deleteCompanyById(@NotNull @RequestParam String companyId) throws Exception {
-        companyService.deleteById(companyId);
+    @PostMapping("/delete")
+    public void deleteCompanyById(@NotNull @RequestBody CompanyPresenter companyPresenter) throws Exception {
+        companyService.deleteById(companyPresenter.getId().toString());
     }
 }

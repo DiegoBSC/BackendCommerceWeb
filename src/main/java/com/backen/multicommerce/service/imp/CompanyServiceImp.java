@@ -97,8 +97,11 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public Boolean existsByNameCompany(String nameCompany) {
-        return companyRepository.existsByNameCompany(nameCompany);
+    public Boolean existsByNameCompany(String nameCompany, UUID id) {
+        if(id != null){
+            return companyRepository.existsByNameCompanyAndId(nameCompany, id);
+        }
+        return !companyRepository.existsByNameCompany(nameCompany);
     }
 
     @Override
@@ -107,7 +110,8 @@ public class CompanyServiceImp implements CompanyService {
                 .nameCompany(companyPresenter.getNameCompany())
                 .id(companyPresenter.getId())
                 .status(companyPresenter.getStatus() != null ? companyPresenter.getStatus() : EnumStatusGeneral.ACT)
-                .createdDate(companyPresenter.getCreatedDate() == null ? new Date() : companyPresenter.getCreatedDate())
+                .createdDate(companyPresenter.getId() == null ? new Date() : companyPresenter.getCreatedDate())
+                .updateDate(companyPresenter.getId() == null? null : new Date())
                 .identification(companyPresenter.getIdentification())
                 .build();
     }
