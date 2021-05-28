@@ -1,5 +1,6 @@
 package com.backen.multicommerce.security.entity;
 
+import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,11 @@ public class User {
     @JoinTable(name = "user_rol", joinColumns= @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "sec_user_company", joinColumns= @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id"))
+    private Set<Company> companies;
+
     public User(UUID id) {
         this.id = id;
     }

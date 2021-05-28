@@ -327,4 +327,26 @@
                                  referencedTableName="per_person" referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet author="Diego Acosta" id="script03">
+        <createTable tableName="sec_user_company">
+        <column name="user_id" type="UUID">
+            <constraints nullable="false"/>
+        </column>
+        <column name="company_id" type="UUID">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+        <addPrimaryKey tableName="sec_user_company" columnNames="user_id,company_id"/>
+        <addForeignKeyConstraint baseTableName="sec_user_company" baseColumnNames="user_id"
+                                 constraintName="fk_user_id_company"
+                                 referencedTableName="sec_users" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="sec_user_company" baseColumnNames="company_id"
+                                 constraintName="fk_company_id_users"
+                                 referencedTableName="com_companies" referencedColumnNames="id"/>
+
+    </changeSet>
+
+
+
+
 </databaseChangeLog>

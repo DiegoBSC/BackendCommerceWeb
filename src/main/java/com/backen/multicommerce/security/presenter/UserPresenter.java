@@ -1,5 +1,6 @@
 package com.backen.multicommerce.security.presenter;
 
+import com.backen.multicommerce.enums.EnumStatusGeneral;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,6 +23,9 @@ public class UserPresenter {
     private String email;
     @NotBlank
     private String password;
+    private EnumStatusGeneral status;
     @NotNull
     private Set<String> roles;
+    @NotNull
+    private Set<String> companies;
 }
