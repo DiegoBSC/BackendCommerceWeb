@@ -8,6 +8,7 @@ import com.backen.multicommerce.security.entity.Rol;
 import com.backen.multicommerce.security.entity.User;
 import com.backen.multicommerce.security.presenter.UserPresenter;
 import com.backen.multicommerce.security.repository.UserRepository;
+import com.backen.multicommerce.service.CompanyService;
 import com.backen.multicommerce.utils.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,9 @@ public class UserService {
     @Autowired
     RolService rolService;
 
+    @Autowired
+    CompanyService companyService;
+
     public Optional<User> getByNick(String userNick) {
         return userRepository.findByNick(userNick);
     }
@@ -54,7 +58,6 @@ public class UserService {
                 .password(passwordEncoder.encode(userPresenter.getPassword()))
                 .createdDate(new Date())
                 .status(EnumStatusGeneral.ACT)
-
                 .build();
         Set<Rol> roles = new HashSet<>();
         if (userPresenter.getRoles().contains("admin"))
@@ -68,6 +71,18 @@ public class UserService {
         if (roles.isEmpty())
             throw new Exception("El usuario debe tener al menos un rol");
         user.setRoles(roles);
+
+        if (userPresenter.getCompanies() != null && userPresenter.getCompanies().size() > 0) {
+            Set<Company> companies = new HashSet<>();
+            userPresenter.getCompanies().forEach(idCompany -> {
+                CompanyPresenter companyPresenter = companyService.findById(UUID.fromString(idCompany));
+                if (companyPresenter != null) {
+                    companies.add(companyService.getCompanyFromCompanyPresenter(companyPresenter));
+                }
+            });
+            user.setCompanies(companies);
+        }
+
         userRepository.save(user);
     }
 

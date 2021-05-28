@@ -71,4 +71,13 @@ public class CompanyController {
     public void deleteCompanyById(@NotNull @RequestBody CompanyPresenter companyPresenter) throws Exception {
         companyService.deleteById(companyPresenter.getId().toString());
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
+    @GetMapping("/findByUserId")
+    public ResponseEntity<?> findCompaniesByIdUser(@NotNull @RequestParam String userId) {
+        if (userId == null)
+            return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
+        List<CompanyPresenter> listCompanies = companyService.findCompanyByIdUser(userId);
+        return new ResponseEntity(listCompanies, HttpStatus.OK);
+    }
 }

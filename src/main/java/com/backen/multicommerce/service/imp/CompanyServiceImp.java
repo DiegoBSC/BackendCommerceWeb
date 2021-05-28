@@ -33,7 +33,7 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public List<CompanyPresenter> findAll() {
         List<Company> list = (List<Company>) companyRepository.findAll();
-        return list.stream().map( (e)->
+        return list.stream().map((e) ->
                 getCompanyPresenterFromCompany(e)
         ).collect(Collectors.toList());
     }
@@ -42,9 +42,9 @@ public class CompanyServiceImp implements CompanyService {
     public Paginator findCompanyFilter(Integer page, Integer size, String mainFilter, String userId) {
         Pageable paging = PageRequest.of(page, size, Sort.by("nameCompany"));
 
-        Page<Company> listQuery = companyRepository.findByFilters(userId != null ? UUID.fromString(userId): null , mainFilter, paging);
+        Page<Company> listQuery = companyRepository.findByFilters(userId != null ? UUID.fromString(userId) : null, mainFilter, paging);
 
-        List<CompanyPresenter> listPresenter =  listQuery.getContent().stream().map( (e)->
+        List<CompanyPresenter> listPresenter = listQuery.getContent().stream().map((e) ->
                 getCompanyPresenterFromCompany(e)
         ).collect(Collectors.toList());
 
@@ -53,10 +53,22 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
+    public List<CompanyPresenter> findCompanyByIdUser(String userId) {
+
+        List<Company> listQuery = companyRepository.findByUserId(UUID.fromString(userId));
+
+        List<CompanyPresenter> listPresenter = listQuery.stream().map((e) ->
+                getCompanyPresenterFromCompany(e)
+        ).collect(Collectors.toList());
+
+        return listPresenter;
+    }
+
+    @Override
     public CompanyPresenter findById(UUID id) {
         CompanyPresenter companyPresenter = null;
         Company company = companyRepository.findById(id).orElse(null);
-        if(company != null){
+        if (company != null) {
             companyPresenter = getCompanyPresenterFromCompany(company);
         }
         return companyPresenter;
@@ -64,7 +76,7 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public CompanyPresenter save(CompanyPresenter companyPresenter) {
-        User user  = userService.findById(companyPresenter.getUserId()).get();
+        User user = userService.findById(companyPresenter.getUserId()).get();
         Company company = getCompanyFromCompanyPresenter(companyPresenter);
         company.setUser(user);
         company.setUpdateDate(new Date());
@@ -75,8 +87,8 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public void deleteById(String companyId) throws Exception {
-        Company company =  companyRepository.findById(UUID.fromString(companyId)).get();
-        if(company == null)
+        Company company = companyRepository.findById(UUID.fromString(companyId)).get();
+        if (company == null)
             throw new Exception("La empresa no fue encontrada");
         company.setUpdateDate(new Date());
         company.setStatus(EnumStatusGeneral.INA);
@@ -85,7 +97,7 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public CompanyPresenter getCompanyPresenterFromCompany(Company company){
+    public CompanyPresenter getCompanyPresenterFromCompany(Company company) {
         return CompanyPresenter.builder()
                 .nameCompany(company.getNameCompany())
                 .id(company.getId())
@@ -98,20 +110,20 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public Boolean existsByNameCompany(String nameCompany, UUID id) {
-        if(id != null){
+        if (id != null) {
             return companyRepository.existsByNameCompanyAndId(nameCompany, id);
         }
         return !companyRepository.existsByNameCompany(nameCompany);
     }
 
     @Override
-    public Company getCompanyFromCompanyPresenter(CompanyPresenter companyPresenter){
+    public Company getCompanyFromCompanyPresenter(CompanyPresenter companyPresenter) {
         return Company.builder()
                 .nameCompany(companyPresenter.getNameCompany())
                 .id(companyPresenter.getId())
                 .status(companyPresenter.getStatus() != null ? companyPresenter.getStatus() : EnumStatusGeneral.ACT)
                 .createdDate(companyPresenter.getId() == null ? new Date() : companyPresenter.getCreatedDate())
-                .updateDate(companyPresenter.getId() == null? null : new Date())
+                .updateDate(companyPresenter.getId() == null ? null : new Date())
                 .identification(companyPresenter.getIdentification())
                 .build();
     }

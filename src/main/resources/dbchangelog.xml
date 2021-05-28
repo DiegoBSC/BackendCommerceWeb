@@ -343,7 +343,6 @@
         <addForeignKeyConstraint baseTableName="sec_user_company" baseColumnNames="company_id"
                                  constraintName="fk_company_id_users"
                                  referencedTableName="com_companies" referencedColumnNames="id"/>
-
     </changeSet>
 
 

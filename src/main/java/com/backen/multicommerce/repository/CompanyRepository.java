@@ -28,4 +28,6 @@ public interface CompanyRepository extends CrudRepository<Company, UUID> {
     )
     Page<Company> findByFilters(UUID userId, String mainFilter, Pageable pageable);
 
+    List<Company> findByUserId(UUID userId);
+
 }

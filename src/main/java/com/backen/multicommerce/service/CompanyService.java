@@ -16,4 +16,5 @@ public interface CompanyService {
     CompanyPresenter getCompanyPresenterFromCompany(Company company);
     Boolean existsByNameCompany(String nameCompany,UUID id);
     Paginator findCompanyFilter(Integer page, Integer size, String mainFilter, String userId);
+    List<CompanyPresenter> findCompanyByIdUser(String userid);
 }
