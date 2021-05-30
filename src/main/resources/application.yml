@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/MULTICOMMERCE
     username: postgres
-    password: system
+    password: postgres
   jpa:
     properties:
       hibernate:

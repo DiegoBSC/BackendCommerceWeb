@@ -36,3 +36,9 @@ build/
 
 ### VS Code ###
 .vscode/
+.gradle/6.8.3/executionHistory/executionHistory.bin
+.gradle/6.8.3/executionHistory/executionHistory.bin
+.gradle/6.8.3/executionHistory/executionHistory.lock
+.gradle/6.8.3/fileHashes/fileHashes.bin
+*.bin
+*.lock
