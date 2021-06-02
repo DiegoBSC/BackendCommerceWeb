@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequestMapping("/api/catalog")
 @CrossOrigin
 public class CatalogController {
-    
+
     @Autowired
     CatalogService catalogService;
 
@@ -40,7 +40,7 @@ public class CatalogController {
         if (catalogId == null)
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         CatalogPresenter catalogPresenter = catalogService.findById(UUID.fromString(catalogId));
-        if(catalogPresenter == null)
+        if (catalogPresenter == null)
             return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(catalogPresenter, HttpStatus.OK);
     }
@@ -51,7 +51,7 @@ public class CatalogController {
         if (companyId == null)
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         List<CatalogPresenter> listResult = catalogService.findAllByCompanyId(companyId);
-        if(listResult == null)
+        if (listResult == null)
             return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);
     }
@@ -67,5 +67,16 @@ public class CatalogController {
     @GetMapping("/delete")
     public void deleteCatalogById(@NotNull @RequestParam String catalogId) throws Exception {
         catalogService.deleteById(catalogId);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
+    @GetMapping("/findCatalogAllByUser")
+    public ResponseEntity<?> findCatalogAllByUser(@NotNull @RequestParam String companyId) {
+        if (companyId == null)
+            return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
+        List<CatalogPresenter> listResult = catalogService.findAllByCompanyId(companyId);
+        if (listResult == null)
+            return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(listResult, HttpStatus.OK);
     }
 }
