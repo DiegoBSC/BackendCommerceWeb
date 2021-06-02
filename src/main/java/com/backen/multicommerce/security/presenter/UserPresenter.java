@@ -13,7 +13,6 @@ import java.util.UUID;
 @Data
 @Builder
 public class UserPresenter {
-    @NotBlank
     private UUID id;
     @NotBlank
     private String name;

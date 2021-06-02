@@ -60,13 +60,13 @@ public class UserService {
                 .status(EnumStatusGeneral.ACT)
                 .build();
         Set<Rol> roles = new HashSet<>();
-        if (userPresenter.getRoles().contains("admin"))
+        if (userPresenter.getRoles().contains("ROLE_ADMIN"))
             roles.add(rolService.getByRolName(EnumRol.ROLE_ADMIN).get());
-        if (userPresenter.getRoles().contains("super"))
+        if (userPresenter.getRoles().contains("ROLE_SUPER"))
             roles.add(rolService.getByRolName(EnumRol.ROLE_SUPER).get());
-        if (userPresenter.getRoles().contains("customer"))
+        if (userPresenter.getRoles().contains("ROLE_CUSTOMER"))
             roles.add(rolService.getByRolName(EnumRol.ROLE_CUSTOMER).get());
-        if (userPresenter.getRoles().contains("user"))
+        if (userPresenter.getRoles().contains("ROLE_USER"))
             roles.add(rolService.getByRolName(EnumRol.ROLE_USER).get());
         if (roles.isEmpty())
             throw new Exception("El usuario debe tener al menos un rol");
@@ -82,7 +82,6 @@ public class UserService {
             });
             user.setCompanies(companies);
         }
-
         userRepository.save(user);
     }
 
