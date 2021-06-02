@@ -4,15 +4,15 @@ import com.backen.multicommerce.entity.Catalog;
 import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.enums.EnumStatusGeneral;
 import com.backen.multicommerce.presenter.CatalogPresenter;
+import com.backen.multicommerce.presenter.CompanyPresenter;
 import com.backen.multicommerce.repository.CatalogRepository;
 import com.backen.multicommerce.repository.CompanyRepository;
 import com.backen.multicommerce.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import javax.validation.ValidationException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +27,7 @@ public class CatalogServiceImp implements CatalogService {
     @Override
     public List<CatalogPresenter> findAll() {
         List<Catalog> list = (List<Catalog>) catalogRepository.findAll();
-        return list.stream().map( (e)->
+        return list.stream().map((e) ->
                 getCatalogPresenterFromCatalog(e)
         ).collect(Collectors.toList());
     }
@@ -36,7 +36,7 @@ public class CatalogServiceImp implements CatalogService {
     public CatalogPresenter findById(UUID id) {
         CatalogPresenter catalogPresenter = null;
         Catalog catalog = catalogRepository.findById(id).orElse(null);
-        if(catalog != null){
+        if (catalog != null) {
             catalogPresenter = getCatalogPresenterFromCatalog(catalog);
         }
         return catalogPresenter;
@@ -48,7 +48,7 @@ public class CatalogServiceImp implements CatalogService {
         Catalog catalog = getCatalogFromCatalogPresenter(catalogPresenter);
         catalog.setCompany(company);
         catalog.setStatus(EnumStatusGeneral.ACT);
-        if(catalogPresenter.getId() == null){
+        if (catalogPresenter.getId() == null) {
             catalog.setCreatedDate(new Date());
         }
         catalog.setUpdateDate(new Date());
@@ -59,8 +59,8 @@ public class CatalogServiceImp implements CatalogService {
 
     @Override
     public void deleteById(String id) throws Exception {
-        Catalog catalog =  catalogRepository.findById(UUID.fromString(id)).get();
-        if(catalog == null)
+        Catalog catalog = catalogRepository.findById(UUID.fromString(id)).get();
+        if (catalog == null)
             throw new Exception("El catálogo no fue encontrado");
         catalog.setUpdateDate(new Date());
         catalog.setStatus(EnumStatusGeneral.INA);
@@ -104,9 +104,32 @@ public class CatalogServiceImp implements CatalogService {
                 product.setCompany(null);
             });
         });
-        return list.stream().map( (e)->
+        return list.stream().map((e) ->
                 getCatalogPresenterFromCatalog(e)
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CatalogPresenter> getCatalogsByCompanyId(UUID userId) {
+        List<Company> listQuery = companyRepository.findByUserId(userId);
+        if (listQuery.size() == 0) {
+            throw new ValidationException("Usuario no dispone de catalogos");
+        }
+        List<CatalogPresenter> result = new ArrayList<>();
+        listQuery.forEach(item -> {
+            List<Catalog> catalogs = catalogRepository.findByCatalogByCompanyId(item.getId());
+            catalogs.forEach(item1 -> {
+                CatalogPresenter presenter = CatalogPresenter.builder()
+                        .id(item1.getId())
+                        .name(item1.getName())
+                        .companyId(item1.getCompany().getId())
+                        .createdDate(item1.getCreatedDate())
+                        .status(item1.getStatus())
+                        .build();
+                result.add(presenter);
+            });
+        });
+        return result;
     }
 
 }

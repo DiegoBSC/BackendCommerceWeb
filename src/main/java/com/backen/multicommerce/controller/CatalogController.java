@@ -70,11 +70,11 @@ public class CatalogController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
-    @GetMapping("/findCatalogAllByUser")
-    public ResponseEntity<?> findCatalogAllByUser(@NotNull @RequestParam String companyId) {
-        if (companyId == null)
+    @GetMapping("/getCatalogsByCompanyId")
+    public ResponseEntity<?> getCatalogsByCompanyId(@NotNull @RequestParam("userId") UUID userId) {
+        if (userId == null)
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        List<CatalogPresenter> listResult = catalogService.findAllByCompanyId(companyId);
+        List<CatalogPresenter> listResult = catalogService.getCatalogsByCompanyId(userId);
         if (listResult == null)
             return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);

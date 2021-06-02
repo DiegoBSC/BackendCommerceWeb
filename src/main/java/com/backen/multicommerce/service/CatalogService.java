@@ -15,4 +15,5 @@ public interface CatalogService {
     CatalogPresenter getCatalogPresenterFromCatalog(Catalog catalog);
     Boolean existsByNameCatalog(String nameCatalog);
     List<CatalogPresenter> findAllByCompanyId(String companyId);
+    List<CatalogPresenter> getCatalogsByCompanyId(UUID userId);
 }
