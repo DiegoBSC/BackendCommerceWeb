@@ -20,7 +20,6 @@ public class UserPresenter {
     private String nick;
     @Email
     private String email;
-    @NotBlank
     private String password;
     private EnumStatusGeneral status;
     @NotNull

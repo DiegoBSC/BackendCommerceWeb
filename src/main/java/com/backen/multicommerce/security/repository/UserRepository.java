@@ -22,7 +22,8 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     Boolean existsByEmail(String userEmail);
 
     @Query("SELECT c FROM User c " +
-            "where ((cast(UPPER(c.nick) as string) like " +
+            "where c.status = 'ACT' " +
+            "and ((cast(UPPER(c.nick) as string) like " +
             "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(c.nick as string)))) " +
             "or (cast(UPPER(c.name) as string) like " +
             "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(c.name as string)))))"

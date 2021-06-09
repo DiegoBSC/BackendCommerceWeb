@@ -55,7 +55,7 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public List<CompanyPresenter> findCompanyByIdUser(String userId) {
 
-        List<Company> listQuery = companyRepository.findByUserId(UUID.fromString(userId));
+        List<Company> listQuery = companyRepository.findByUserIdAndStatus(UUID.fromString(userId), EnumStatusGeneral.ACT );
 
         List<CompanyPresenter> listPresenter = listQuery.stream().map((e) ->
                 getCompanyPresenterFromCompany(e)

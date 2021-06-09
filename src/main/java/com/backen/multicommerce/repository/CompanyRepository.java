@@ -1,6 +1,7 @@
 package com.backen.multicommerce.repository;
 
 import com.backen.multicommerce.entity.Company;
+import com.backen.multicommerce.enums.EnumStatusGeneral;
 import com.backen.multicommerce.security.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,6 @@ public interface CompanyRepository extends CrudRepository<Company, UUID> {
     )
     Page<Company> findByFilters(UUID userId, String mainFilter, Pageable pageable);
 
-    List<Company> findByUserId(UUID userId);
+    List<Company> findByUserIdAndStatus(UUID userId , EnumStatusGeneral status);
 
 }

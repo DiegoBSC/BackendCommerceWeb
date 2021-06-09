@@ -51,14 +51,25 @@ public class UserService {
     }
 
     public void save(UserPresenter userPresenter) throws Exception {
-        User user = User.builder()
-                .email(userPresenter.getEmail())
-                .name(userPresenter.getName())
-                .nick(userPresenter.getNick())
-                .password(passwordEncoder.encode(userPresenter.getPassword()))
-                .createdDate(new Date())
-                .status(EnumStatusGeneral.ACT)
-                .build();
+        User user;
+        if(userPresenter.getId() == null){
+            user = User.builder()
+                    .email(userPresenter.getEmail())
+                    .name(userPresenter.getName())
+                    .nick(userPresenter.getNick())
+                    .password(passwordEncoder.encode(userPresenter.getPassword()))
+                    .createdDate(new Date())
+                    .status(EnumStatusGeneral.ACT)
+                    .build();
+        }else {
+            user = findById(userPresenter.getId()).orElse(null);
+            if(user != null){
+                user.setEmail(userPresenter.getEmail());
+                user.setName(userPresenter.getName());
+                user.setStatus(EnumStatusGeneral.ACT);
+            }
+        }
+
         Set<Rol> roles = new HashSet<>();
         if (userPresenter.getRoles().contains("ROLE_ADMIN"))
             roles.add(rolService.getByRolName(EnumRol.ROLE_ADMIN).get());
@@ -85,6 +96,16 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void deleteUserById(String userId) throws Exception {
+       User user  = this.findById(UUID.fromString(userId)).orElse(null);
+        if (user == null)
+            throw new Exception("Usuario no fue encontrado");
+       user.setStatus(EnumStatusGeneral.INA);
+       user.setNick(user.getNick().concat("-INA"));
+       user.setEmail(user.getEmail().concat("-INA"));
+       userRepository.save(user);
+    }
+
     public Optional<User> findById(UUID userId) {
         return userRepository.findById(userId);
     }
@@ -93,7 +114,6 @@ public class UserService {
         User user = userRepository.findByNick(userNick).get();
         return getUserPresenterFromUser(user);
     }
-
 
     public Paginator findUserFilter(Integer page, Integer size, String mainFilter) {
         Pageable paging = PageRequest.of(page, size, Sort.by("nick"));
@@ -131,6 +151,4 @@ public class UserService {
                 .companies(companies)
                 .build();
     }
-
-
 }

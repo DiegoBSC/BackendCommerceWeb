@@ -1,5 +1,6 @@
 package com.backen.multicommerce.controller;
 
+import com.backen.multicommerce.presenter.CompanyPresenter;
 import com.backen.multicommerce.presenter.MessagePresenter;
 import com.backen.multicommerce.security.presenter.UserPresenter;
 import com.backen.multicommerce.security.service.UserService;
@@ -28,9 +29,9 @@ public class UserController {
         // BindingResult es lo que maneja los posibles errores del objeto  @NotNull, @NotBlank, etc
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos invalidos"), HttpStatus.BAD_REQUEST);
-        if (userService.existByNickUser(userPresenter.getNick()))
+        if (userPresenter.getId() == null && userService.existByNickUser(userPresenter.getNick()))
             return new ResponseEntity(new MessagePresenter("El nombre de usuario ya existe"), HttpStatus.BAD_REQUEST);
-        if (userService.existByEmailUser(userPresenter.getEmail()))
+        if (userPresenter.getId() == null && userService.existByEmailUser(userPresenter.getEmail()))
             return new ResponseEntity(new MessagePresenter("El email ya existe"), HttpStatus.BAD_REQUEST);
         userService.save(userPresenter);
         return new ResponseEntity(new MessagePresenter("El usuario fue guardado"), HttpStatus.CREATED);
@@ -45,5 +46,11 @@ public class UserController {
         if(listResult == null)
             return new ResponseEntity(new MessagePresenter("Error: Usarios no registrados"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
+    @PostMapping("/delete")
+    public void deleteUserById(@NotNull @RequestBody UserPresenter userPresenter) throws Exception {
+        userService.deleteUserById(userPresenter.getId().toString());
     }
 }
