@@ -50,8 +50,9 @@ public class TaxProductServiceImp implements TaxProductService {
     public void deleteById(String id) throws Exception {
         TaxProduct taxProduct = taxProductRepository.findById(UUID.fromString(id)).get();
         if (taxProduct == null)
-            throw new Exception("El tipo de producto no fue encontrado");
+            throw new Exception("El impuesto no fue encontrado");
         taxProduct.setStatus(EnumStatusGeneral.INA);
+        taxProduct.setName(taxProduct.getName().concat("-INA"));
         taxProductRepository.save(taxProduct);
     }
 
