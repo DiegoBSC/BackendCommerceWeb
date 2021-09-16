@@ -54,7 +54,7 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public void deleteCategoryById(@NotNull @RequestParam String categoryId) throws Exception {
         categoryProductService.deleteById(categoryId);
     }

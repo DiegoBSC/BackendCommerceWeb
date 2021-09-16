@@ -20,7 +20,7 @@ public class TaxProductServiceImp implements TaxProductService {
 
     @Override
     public List<TaxProductPresenter> findAll() {
-        List<TaxProduct> list = (List<TaxProduct>) taxProductRepository.findAll();
+        List<TaxProduct> list = (List<TaxProduct>) taxProductRepository.findByStatus(EnumStatusGeneral.ACT);
         return list.stream().map((e) ->
                 getTaxProductPresenterFromTaxProduct(e)
         ).collect(Collectors.toList());
@@ -62,6 +62,7 @@ public class TaxProductServiceImp implements TaxProductService {
         return TaxProduct.builder()
                 .id(taxProductPresenter.getId())
                 .name(taxProductPresenter.getName())
+                .valueTax(taxProductPresenter.getValueTax())
                 .status(taxProductPresenter.getStatus() != null ? taxProductPresenter.getStatus() : EnumStatusGeneral.ACT)
                 .build();
     }
@@ -72,6 +73,7 @@ public class TaxProductServiceImp implements TaxProductService {
         return TaxProductPresenter.builder()
                 .id(taxProduct.getId())
                 .name(taxProduct.getName())
+                .valueTax(taxProduct.getValueTax())
                 .status(taxProduct.getStatus())
                 .build();
     }

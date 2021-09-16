@@ -20,7 +20,7 @@ public class CategoryProductServiceImp implements CategoryProductService {
     
     @Override
     public List<CategoryProductPresenter> findAll() {
-        List<CategoryProduct> list = (List<CategoryProduct>) categoryProductRepository.findAll();
+        List<CategoryProduct> list = (List<CategoryProduct>) categoryProductRepository.findByStatus(EnumStatusGeneral.ACT);
         return list.stream().map( (e)->
                 getCategoryProductPresenterFromCategoryProduct(e)
         ).collect(Collectors.toList());
@@ -52,6 +52,7 @@ public class CategoryProductServiceImp implements CategoryProductService {
         if(categoryProduct == null)
             throw new Exception("La categoria no fue encontrada");
         categoryProduct.setStatus(EnumStatusGeneral.INA);
+        categoryProduct.setName(categoryProduct.getName().concat("-INA"));
         categoryProductRepository.save(categoryProduct);
     }
 

@@ -1,6 +1,5 @@
 package com.backen.multicommerce.controller;
 
-import com.backen.multicommerce.presenter.CatalogPresenter;
 import com.backen.multicommerce.presenter.MessagePresenter;
 import com.backen.multicommerce.presenter.TaxProductPresenter;
 import com.backen.multicommerce.service.TaxProductService;
@@ -29,7 +28,7 @@ public class TaxController {
     public ResponseEntity<?> saveTaxProduct(@Valid @RequestBody TaxProductPresenter taxProductPresenter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        if (taxProductService.existsByName(taxProductPresenter.getName()))
+        if (taxProductPresenter.getId() == null  && taxProductService.existsByName(taxProductPresenter.getName()))
             return new ResponseEntity(new MessagePresenter("El catalogo ya existe"), HttpStatus.BAD_REQUEST);
         taxProductService.save(taxProductPresenter);
         return new ResponseEntity(new MessagePresenter("El catalogo fue guardado"), HttpStatus.CREATED);

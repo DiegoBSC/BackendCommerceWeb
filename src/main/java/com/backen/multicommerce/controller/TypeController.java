@@ -30,7 +30,7 @@ public class TypeController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (typeProductService.existsByName(typeProductPresenter.getName()))
-            return new ResponseEntity(new MessagePresenter("La tipo producto ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("El tipo producto ya existe"), HttpStatus.BAD_REQUEST);
         typeProductService.save(typeProductPresenter);
         return new ResponseEntity(new MessagePresenter("El tipo producto fue guardado"), HttpStatus.CREATED);
     }
@@ -54,7 +54,7 @@ public class TypeController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public void deleteTypeById(@NotNull @RequestParam String typeId) throws Exception {
         typeProductService.deleteById(typeId);
     }

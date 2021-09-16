@@ -20,7 +20,7 @@ public class TypeProductServiceImp implements TypeProductService {
 
     @Override
     public List<TypeProductPresenter> findAll() {
-        List<TypeProduct> list = (List<TypeProduct>) typeProductRepository.findAll();
+        List<TypeProduct> list = (List<TypeProduct>) typeProductRepository.findByStatus(EnumStatusGeneral.ACT);
         return list.stream().map((e) ->
                 getTypeProductPresenterFromTypeProduct(e)
         ).collect(Collectors.toList());
@@ -52,6 +52,7 @@ public class TypeProductServiceImp implements TypeProductService {
         if (typeProduct == null)
             throw new Exception("El tipo de producto no fue encontrado");
         typeProduct.setStatus(EnumStatusGeneral.INA);
+        typeProduct.setName(typeProduct.getName().concat("-INA"));
         typeProductRepository.save(typeProduct);
     }
 
