@@ -26,4 +26,5 @@ public class CatalogPresenter {
     private Set<Product> products;
     @NotNull
     private String companyId;
+    private String nameCompany;
 }

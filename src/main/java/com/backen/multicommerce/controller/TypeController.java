@@ -29,7 +29,7 @@ public class TypeController {
             , BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        if (typeProductService.existsByName(typeProductPresenter.getName()))
+        if (typeProductPresenter.getId() == null  && typeProductService.existsByName(typeProductPresenter.getName()))
             return new ResponseEntity(new MessagePresenter("El tipo producto ya existe"), HttpStatus.BAD_REQUEST);
         typeProductService.save(typeProductPresenter);
         return new ResponseEntity(new MessagePresenter("El tipo producto fue guardado"), HttpStatus.CREATED);

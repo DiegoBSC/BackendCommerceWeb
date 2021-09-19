@@ -28,7 +28,7 @@ public class CatalogController {
     public ResponseEntity<?> saveCatalog(@Valid @RequestBody CatalogPresenter catalogPresenter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        if (catalogService.existsByNameCatalog(catalogPresenter.getName()))
+        if (catalogService.existsByNameCatalog(catalogPresenter.getName(), catalogPresenter.getId()))
             return new ResponseEntity(new MessagePresenter("El catálogo ya existe"), HttpStatus.BAD_REQUEST);
         catalogService.save(catalogPresenter);
         return new ResponseEntity(new MessagePresenter("El catálogo fue guardado"), HttpStatus.CREATED);

@@ -13,6 +13,8 @@ public interface CatalogRepository extends CrudRepository<Catalog, UUID> {
 
     Boolean existsByName(String nameCatalog);
 
+    Boolean existsByNameAndId(String nameCatalog, UUID id);
+
     @Query("SELECT c FROM Catalog c " +
             "where c.company.id in (:companiesIds)" +
             "and c.status = 'ACT'"

@@ -28,7 +28,7 @@ public class ProductController {
     public ResponseEntity<?> saveProduct(@Valid @RequestBody ProductPresenter productPresenter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        if (productPresenter.getId() == null &&  productService.existsByNameAndCompany(productPresenter.getName(), productPresenter.getCompanyId()))
+        if (productPresenter.getId() == null &&  productService.existsByName(productPresenter.getName()))
             return new ResponseEntity(new MessagePresenter("El producto ya existe"), HttpStatus.BAD_REQUEST);
         productService.save(productPresenter);
         return new ResponseEntity(new MessagePresenter("El producto fue guardado"), HttpStatus.CREATED);
@@ -50,7 +50,7 @@ public class ProductController {
     public ResponseEntity<?> findProductAllByCompany(@NotNull @RequestParam String companyId) {
         if (companyId == null)
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        List<ProductPresenter> listResult = productService.findAllByCompany(companyId);
+        List<ProductPresenter> listResult = productService.findAll();
         if(listResult == null)
             return new ResponseEntity(new MessagePresenter("Error: Producto no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);

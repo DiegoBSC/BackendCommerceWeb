@@ -29,7 +29,7 @@ public class CategoryController {
             , BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        if (categoryProductService.existsByName(categoryProductPresenter.getName()))
+        if (categoryProductPresenter.getId() == null  && categoryProductService.existsByName(categoryProductPresenter.getName()))
             return new ResponseEntity(new MessagePresenter("La categoria ya existe"), HttpStatus.BAD_REQUEST);
         categoryProductService.save(categoryProductPresenter);
         return new ResponseEntity(new MessagePresenter("El categoria fue guardada"), HttpStatus.CREATED);

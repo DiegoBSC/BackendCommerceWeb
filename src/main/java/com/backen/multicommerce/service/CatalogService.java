@@ -1,6 +1,5 @@
 package com.backen.multicommerce.service;
 
-import com.backen.multicommerce.entity.Catalog;
 import com.backen.multicommerce.presenter.CatalogPresenter;
 
 import java.util.List;
@@ -11,6 +10,6 @@ public interface CatalogService {
     CatalogPresenter findById(UUID id);
     CatalogPresenter save(CatalogPresenter catalogPresenter);
     void deleteById(String id) throws Exception;
-    Boolean existsByNameCatalog(String nameCatalog);
+    Boolean existsByNameCatalog(String nameCatalog, UUID catalogId);
     List<CatalogPresenter> findByCompanyAndStatus(String companyId);
 }

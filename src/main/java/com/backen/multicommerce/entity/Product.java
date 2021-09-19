@@ -45,7 +45,4 @@ public class Product {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tax_product_id", referencedColumnName = "id")
     private TaxProduct taxProduct;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "companyId", referencedColumnName = "id")
-    private Company company;
 }

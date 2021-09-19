@@ -29,9 +29,9 @@ public class TaxController {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (taxProductPresenter.getId() == null  && taxProductService.existsByName(taxProductPresenter.getName()))
-            return new ResponseEntity(new MessagePresenter("El catalogo ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("El impuesto ya existe"), HttpStatus.BAD_REQUEST);
         taxProductService.save(taxProductPresenter);
-        return new ResponseEntity(new MessagePresenter("El catalogo fue guardado"), HttpStatus.CREATED);
+        return new ResponseEntity(new MessagePresenter("El impuesto fue guardado"), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")

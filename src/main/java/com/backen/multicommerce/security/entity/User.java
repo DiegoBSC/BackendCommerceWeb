@@ -39,7 +39,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private EnumStatusGeneral status;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_rol", joinColumns= @JoinColumn(name = "user_id"),
+    @JoinTable(name = "sec_user_rol", joinColumns= @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles;
     @ManyToMany(fetch = FetchType.EAGER)

@@ -44,7 +44,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="user_rol">
+        <createTable tableName="sec_user_rol">
             <column name="user_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
@@ -52,11 +52,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addPrimaryKey tableName="user_rol" columnNames="user_id,rol_id"/>
-        <addForeignKeyConstraint baseTableName="user_rol" baseColumnNames="user_id"
+        <addPrimaryKey tableName="sec_user_rol" columnNames="user_id,rol_id"/>
+        <addForeignKeyConstraint baseTableName="sec_user_rol" baseColumnNames="user_id"
                                  constraintName="fk_user_id_roles"
                                  referencedTableName="sec_users" referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="user_rol" baseColumnNames="rol_id"
+        <addForeignKeyConstraint baseTableName="sec_user_rol" baseColumnNames="rol_id"
                                  constraintName="fk_rol_id_users"
                                  referencedTableName="sec_roles" referencedColumnNames="id"/>
         <createTable tableName="com_companies">
@@ -160,9 +160,9 @@
             <column name="tax_product_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <column name="company_id" type="UUID">
-                <constraints nullable="false"/>
-            </column>
+<!--            <column name="company_id" type="UUID">-->
+<!--                <constraints nullable="false"/>-->
+<!--            </column>-->
             <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
@@ -194,9 +194,9 @@
         <addForeignKeyConstraint baseTableName="pro_product" baseColumnNames="tax_product_id"
                                  constraintName="fk_tax_product_product"
                                  referencedTableName="pro_tax_product" referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="pro_product" baseColumnNames="company_id"
-                                 constraintName="fk_company_product"
-                                 referencedTableName="com_companies" referencedColumnNames="id"/>
+<!--        <addForeignKeyConstraint baseTableName="pro_product" baseColumnNames="company_id"-->
+<!--                                 constraintName="fk_company_product"-->
+<!--                                 referencedTableName="com_companies" referencedColumnNames="id"/>-->
         <createTable tableName="pro_catalogs_products">
             <column name="catalog_id" type="UUID">
                 <constraints nullable="false"/>
@@ -344,8 +344,5 @@
                                  constraintName="fk_company_id_users"
                                  referencedTableName="com_companies" referencedColumnNames="id"/>
     </changeSet>
-
-
-
-
+    <include file="data.sql"/>
 </databaseChangeLog>

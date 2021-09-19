@@ -55,7 +55,7 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public List<CompanyPresenter> findCompanyByIdUser(String userId) {
 
-        List<Company> listQuery = companyRepository.findByUserIdAndStatus(UUID.fromString(userId), EnumStatusGeneral.ACT );
+        List<Company> listQuery = companyRepository.findByUserIdAndStatus(UUID.fromString(userId), EnumStatusGeneral.ACT);
 
         List<CompanyPresenter> listPresenter = listQuery.stream().map((e) ->
                 getCompanyPresenterFromCompany(e)
@@ -85,8 +85,24 @@ public class CompanyServiceImp implements CompanyService {
 
     @Override
     public CompanyPresenter save(CompanyPresenter companyPresenter) throws Exception {
+        Company company = new Company();
+        Company companyDb = null;
         User user = userService.findById(companyPresenter.getUserId()).get();
-        Company company = getCompanyFromCompanyPresenter(companyPresenter);
+
+        if (companyPresenter.getId() != null) {
+            companyDb = companyRepository.findById(companyPresenter.getId()).orElse(null);
+        }
+
+        if (companyDb == null) {
+            company = getCompanyFromCompanyPresenter(companyPresenter);
+        } else {
+            company.setId(companyDb.getId());
+            company.setCreatedDate(companyDb.getCreatedDate());
+            company.setStatus(companyDb.getStatus());
+            company.setNameCompany(companyPresenter.getNameCompany());
+            company.setIdentification(companyPresenter.getIdentification());
+        }
+
         company.setUser(user);
         company.setUpdateDate(new Date());
         Company companySave = companyRepository.save(company);
@@ -122,9 +138,11 @@ public class CompanyServiceImp implements CompanyService {
     @Override
     public Boolean existsByNameCompany(String nameCompany, UUID id) {
         if (id != null) {
-            return companyRepository.existsByNameCompanyAndId(nameCompany, id);
+            if (companyRepository.existsByNameCompanyAndId(nameCompany, id)) {
+                return false;
+            }
         }
-        return !companyRepository.existsByNameCompany(nameCompany);
+        return companyRepository.existsByNameCompany(nameCompany);
     }
 
     @Override

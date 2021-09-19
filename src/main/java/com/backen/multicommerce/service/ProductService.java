@@ -1,6 +1,5 @@
 package com.backen.multicommerce.service;
 
-import com.backen.multicommerce.entity.Company;
 import com.backen.multicommerce.entity.Product;
 import com.backen.multicommerce.presenter.ProductPresenter;
 
@@ -14,6 +13,5 @@ public interface ProductService {
     void deleteById(String id) throws Exception;
     Product getProductFromProductPresenter(ProductPresenter productPresenter);
     ProductPresenter getProductPresenterFromProduct(Product product);
-    Boolean existsByNameAndCompany(String name, String idCompany);
-    List<ProductPresenter> findAllByCompany(String idCompany);
+    Boolean existsByName(String name);
 }

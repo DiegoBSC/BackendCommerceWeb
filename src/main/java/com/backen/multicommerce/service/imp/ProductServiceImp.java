@@ -56,7 +56,6 @@ public class ProductServiceImp implements ProductService {
         CategoryProduct categoryProduct = categoryProductRepository.findById(UUID.fromString(productPresenter.getCategoryProductId())).get();
         TaxProduct taxProduct = taxProductRepository.findById(UUID.fromString(productPresenter.getTaxProductId())).get();
         Product product = getProductFromProductPresenter(productPresenter);
-        product.setCompany(company);
         product.setStatus(EnumStatusGeneral.ACT);
         product.setCategoryProduct(categoryProduct);
         product.setTaxProduct(taxProduct);
@@ -94,7 +93,6 @@ public class ProductServiceImp implements ProductService {
                 .typeProduct(typeProduct)
                 .categoryProduct(categoryProduct)
                 .taxProduct(taxProduct)
-                .company(company)
                 .build();
 
     }
@@ -113,22 +111,13 @@ public class ProductServiceImp implements ProductService {
                         .typeProductId(product.getTypeProduct().getId().toString())
                         .categoryProductId(product.getCategoryProduct().getId().toString())
                         .taxProductId(product.getTaxProduct().getId().toString())
-                        .companyId(product.getCompany().getId().toString())
                         .build();
     }
 
     @Override
-    public Boolean existsByNameAndCompany(String name, String idCompany) {
-        return productRepository.existsByNameAndCompany(name, Company.builder()
-                .id(UUID.fromString(idCompany))
-                .build());
+    public Boolean existsByName(String name) {
+        return productRepository.existsByName(name);
     }
 
-    @Override
-    public List<ProductPresenter> findAllByCompany(String idCompany) {
-                List<Product> list = (List<Product>) productRepository.findByCompany(new Company(UUID.fromString(idCompany)));
-        return list.stream().map( (e)->
-                getProductPresenterFromProduct(e)
-        ).collect(Collectors.toList());
-    }
+
 }

@@ -89,11 +89,17 @@ public class CatalogServiceImp implements CatalogService {
                 .status(catalog.getStatus())
                 .companyId(catalog.getCompany().getId().toString())
                 .products(catalog.getProducts())
+                .nameCompany(catalog.getCompany().getNameCompany())
                 .build();
     }
 
     @Override
-    public Boolean existsByNameCatalog(String nameCatalog) {
+    public Boolean existsByNameCatalog(String nameCatalog, UUID catalogId) {
+        if(catalogId != null){
+            if(catalogRepository.existsByNameAndId(nameCatalog, catalogId)){
+                return false;
+            }
+        }
         return catalogRepository.existsByName(nameCatalog);
     }
 
@@ -101,11 +107,6 @@ public class CatalogServiceImp implements CatalogService {
     public List<CatalogPresenter> findByCompanyAndStatus(String companyId) {
         List<Catalog> list = (List<Catalog>) catalogRepository.findByCompanyAndStatus(
                 new Company(UUID.fromString(companyId)), EnumStatusGeneral.ACT);
-        list.forEach(catalog -> {
-            catalog.getProducts().forEach(product -> {
-                product.setCompany(null);
-            });
-        });
         return list.stream().map((e) ->
                 getCatalogPresenterFromCatalog(e)
         ).collect(Collectors.toList());
