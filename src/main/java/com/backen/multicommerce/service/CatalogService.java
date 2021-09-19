@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CatalogService {
-    List<CatalogPresenter> findAll();
+    List<CatalogPresenter> findAll(List<String> companiesIds);
     CatalogPresenter findById(UUID id);
     CatalogPresenter save(CatalogPresenter catalogPresenter);
     void deleteById(String id) throws Exception;
-    Catalog getCatalogFromCatalogPresenter(CatalogPresenter catalogPresenter);
-    CatalogPresenter getCatalogPresenterFromCatalog(Catalog catalog);
     Boolean existsByNameCatalog(String nameCatalog);
-    List<CatalogPresenter> findAllByCompanyId(String companyId);
+    List<CatalogPresenter> findByCompanyAndStatus(String companyId);
 }

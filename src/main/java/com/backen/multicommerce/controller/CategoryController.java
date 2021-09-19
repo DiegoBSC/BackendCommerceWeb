@@ -23,7 +23,7 @@ public class CategoryController {
     @Autowired
     CategoryProductService categoryProductService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
     @PostMapping("/create")
     public ResponseEntity<?> saveCategory(@Valid @RequestBody CategoryProductPresenter categoryProductPresenter
             , BindingResult bindingResult) {
@@ -53,7 +53,7 @@ public class CategoryController {
         return new ResponseEntity(listResult, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
     @DeleteMapping("/delete")
     public void deleteCategoryById(@NotNull @RequestParam String categoryId) throws Exception {
         categoryProductService.deleteById(categoryId);

@@ -25,9 +25,12 @@ public class CatalogServiceImp implements CatalogService {
     CompanyRepository companyRepository;
 
     @Override
-    public List<CatalogPresenter> findAll() {
-        List<Catalog> list = (List<Catalog>) catalogRepository.findAll();
-        return list.stream().map( (e)->
+    public List<CatalogPresenter> findAll(List<String> companiesIds) {
+        List<UUID> idsCompanies =  companiesIds.stream()
+                .map(UUID::fromString) // map in later stages
+                .collect(Collectors.toList());
+        List<Catalog> list = (List<Catalog>) catalogRepository.findCatalogByUser(idsCompanies);
+        return list.stream().map((e) ->
                 getCatalogPresenterFromCatalog(e)
         ).collect(Collectors.toList());
     }
@@ -36,7 +39,7 @@ public class CatalogServiceImp implements CatalogService {
     public CatalogPresenter findById(UUID id) {
         CatalogPresenter catalogPresenter = null;
         Catalog catalog = catalogRepository.findById(id).orElse(null);
-        if(catalog != null){
+        if (catalog != null) {
             catalogPresenter = getCatalogPresenterFromCatalog(catalog);
         }
         return catalogPresenter;
@@ -44,11 +47,11 @@ public class CatalogServiceImp implements CatalogService {
 
     @Override
     public CatalogPresenter save(CatalogPresenter catalogPresenter) {
-        Company company = companyRepository.findById(catalogPresenter.getCompanyId()).get();
+        Company company = companyRepository.findById(UUID.fromString(catalogPresenter.getCompanyId())).get();
         Catalog catalog = getCatalogFromCatalogPresenter(catalogPresenter);
         catalog.setCompany(company);
         catalog.setStatus(EnumStatusGeneral.ACT);
-        if(catalogPresenter.getId() == null){
+        if (catalogPresenter.getId() == null) {
             catalog.setCreatedDate(new Date());
         }
         catalog.setUpdateDate(new Date());
@@ -59,8 +62,8 @@ public class CatalogServiceImp implements CatalogService {
 
     @Override
     public void deleteById(String id) throws Exception {
-        Catalog catalog =  catalogRepository.findById(UUID.fromString(id)).get();
-        if(catalog == null)
+        Catalog catalog = catalogRepository.findById(UUID.fromString(id)).get();
+        if (catalog == null)
             throw new Exception("El catálogo no fue encontrado");
         catalog.setUpdateDate(new Date());
         catalog.setStatus(EnumStatusGeneral.INA);
@@ -68,7 +71,6 @@ public class CatalogServiceImp implements CatalogService {
         catalogRepository.save(catalog);
     }
 
-    @Override
     public Catalog getCatalogFromCatalogPresenter(CatalogPresenter catalogPresenter) {
         return Catalog.builder()
                 .id(catalogPresenter.getId())
@@ -79,14 +81,13 @@ public class CatalogServiceImp implements CatalogService {
                 .build();
     }
 
-    @Override
     public CatalogPresenter getCatalogPresenterFromCatalog(Catalog catalog) {
         return CatalogPresenter.builder()
                 .id(catalog.getId())
                 .createdDate(catalog.getCreatedDate())
                 .name(catalog.getName())
                 .status(catalog.getStatus())
-                .companyId(catalog.getCompany().getId())
+                .companyId(catalog.getCompany().getId().toString())
                 .products(catalog.getProducts())
                 .build();
     }
@@ -97,14 +98,15 @@ public class CatalogServiceImp implements CatalogService {
     }
 
     @Override
-    public List<CatalogPresenter> findAllByCompanyId(String companyId) {
-        List<Catalog> list = (List<Catalog>) catalogRepository.findByCompany(new Company(UUID.fromString(companyId)));
+    public List<CatalogPresenter> findByCompanyAndStatus(String companyId) {
+        List<Catalog> list = (List<Catalog>) catalogRepository.findByCompanyAndStatus(
+                new Company(UUID.fromString(companyId)), EnumStatusGeneral.ACT);
         list.forEach(catalog -> {
             catalog.getProducts().forEach(product -> {
                 product.setCompany(null);
             });
         });
-        return list.stream().map( (e)->
+        return list.stream().map((e) ->
                 getCatalogPresenterFromCatalog(e)
         ).collect(Collectors.toList());
     }

@@ -34,7 +34,7 @@ public class Catalog {
     @Enumerated(EnumType.STRING)
     private EnumStatusGeneral status;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "catalogs_products", joinColumns= @JoinColumn(name = "catalog_id"),
+    @JoinTable(name = "pro_catalogs_products", joinColumns= @JoinColumn(name = "catalog_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;
     @OneToOne(cascade = CascadeType.ALL)

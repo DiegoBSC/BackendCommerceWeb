@@ -24,5 +24,6 @@ public class CatalogPresenter {
     private String name;
     private EnumStatusGeneral status;
     private Set<Product> products;
-    private UUID companyId;
+    @NotNull
+    private String companyId;
 }

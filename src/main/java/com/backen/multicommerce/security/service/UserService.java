@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,17 +72,17 @@ public class UserService {
         }
 
         Set<Rol> roles = new HashSet<>();
-        if (userPresenter.getRoles().contains("ROLE_ADMIN"))
-            roles.add(rolService.getByRolName(EnumRol.ROLE_ADMIN).get());
-        if (userPresenter.getRoles().contains("ROLE_SUPER"))
-            roles.add(rolService.getByRolName(EnumRol.ROLE_SUPER).get());
-        if (userPresenter.getRoles().contains("ROLE_CUSTOMER"))
-            roles.add(rolService.getByRolName(EnumRol.ROLE_CUSTOMER).get());
-        if (userPresenter.getRoles().contains("ROLE_USER"))
-            roles.add(rolService.getByRolName(EnumRol.ROLE_USER).get());
+        if (userPresenter.getRoles() != null || !userPresenter.getRoles().isEmpty()){
+            userPresenter.getRoles().forEach(rolItem -> {
+                Optional<Rol> rol  = rolService.getByRolName(EnumRol.valueOf(rolItem));
+                if(rol != null && !rol.isEmpty()){
+                    roles.add(rol.get());
+                }
+            });
+        }
+
         if (roles.isEmpty())
-            throw new Exception("El usuario debe tener al menos un rol");
-        user.setRoles(roles);
+            throw new ValidationException("El usuario debe tener al menos un rol");
 
         if (userPresenter.getCompanies() != null && userPresenter.getCompanies().size() > 0) {
             Set<Company> companies = new HashSet<>();

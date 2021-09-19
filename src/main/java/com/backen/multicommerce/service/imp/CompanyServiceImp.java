@@ -65,6 +65,15 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
+    public List<CompanyPresenter> findCompaniesByUser(List<String> companiesIds) {
+        List<UUID> ids = companiesIds.stream().map((item) -> UUID.fromString(item)).collect(Collectors.toList());
+        List<Company> listQuery = companyRepository.findByIdInAndStatus(ids, EnumStatusGeneral.ACT);
+        return listQuery.stream().map((e) ->
+                getCompanyPresenterFromCompany(e)
+        ).collect(Collectors.toList());
+    }
+
+    @Override
     public CompanyPresenter findById(UUID id) {
         CompanyPresenter companyPresenter = null;
         Company company = companyRepository.findById(id).orElse(null);
@@ -75,12 +84,14 @@ public class CompanyServiceImp implements CompanyService {
     }
 
     @Override
-    public CompanyPresenter save(CompanyPresenter companyPresenter) {
+    public CompanyPresenter save(CompanyPresenter companyPresenter) throws Exception {
         User user = userService.findById(companyPresenter.getUserId()).get();
         Company company = getCompanyFromCompanyPresenter(companyPresenter);
         company.setUser(user);
         company.setUpdateDate(new Date());
         Company companySave = companyRepository.save(company);
+        user.getCompanies().add(companySave);
+        userService.save(userService.getUserPresenterFromUser(user));
         CompanyPresenter companyPresenterResult = getCompanyPresenterFromCompany(companySave);
         return companyPresenterResult;
     }

@@ -31,4 +31,6 @@ public interface CompanyRepository extends CrudRepository<Company, UUID> {
 
     List<Company> findByUserIdAndStatus(UUID userId , EnumStatusGeneral status);
 
+    List<Company> findByIdInAndStatus(List<UUID> IdsCompany , EnumStatusGeneral status);
+
 }

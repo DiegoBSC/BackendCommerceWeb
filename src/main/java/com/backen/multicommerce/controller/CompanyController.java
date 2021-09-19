@@ -25,9 +25,9 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
     @PostMapping("/create")
-    public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyPresenter companyPresenter, BindingResult bindingResult) {
+    public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyPresenter companyPresenter, BindingResult bindingResult) throws Exception {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (!companyService.existsByNameCompany(companyPresenter.getNameCompany(), companyPresenter.getId()))
@@ -79,5 +79,14 @@ public class CompanyController {
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         List<CompanyPresenter> listCompanies = companyService.findCompanyByIdUser(userId);
         return new ResponseEntity(listCompanies, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
+    @GetMapping("/findIdsCompanies")
+    public ResponseEntity<?> findCompaniesById(@NotNull @RequestParam List<String> companiesIds) {
+        if (companiesIds == null || companiesIds.size() == 0)
+            return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
+        List<CompanyPresenter> result = companyService.findCompaniesByUser(companiesIds);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }

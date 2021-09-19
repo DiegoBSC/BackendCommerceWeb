@@ -16,22 +16,22 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/catalog")
+@RequestMapping("/api/catalogProduct")
 @CrossOrigin
 public class CatalogController {
     
     @Autowired
     CatalogService catalogService;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
     @PostMapping("/create")
     public ResponseEntity<?> saveCatalog(@Valid @RequestBody CatalogPresenter catalogPresenter, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (catalogService.existsByNameCatalog(catalogPresenter.getName()))
-            return new ResponseEntity(new MessagePresenter("El catalogo ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("El catálogo ya existe"), HttpStatus.BAD_REQUEST);
         catalogService.save(catalogPresenter);
-        return new ResponseEntity(new MessagePresenter("El catalogo fue guardado"), HttpStatus.CREATED);
+        return new ResponseEntity(new MessagePresenter("El catálogo fue guardado"), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
@@ -41,7 +41,7 @@ public class CatalogController {
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         CatalogPresenter catalogPresenter = catalogService.findById(UUID.fromString(catalogId));
         if(catalogPresenter == null)
-            return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("Error: Catálogo no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(catalogPresenter, HttpStatus.OK);
     }
 
@@ -50,21 +50,21 @@ public class CatalogController {
     public ResponseEntity<?> findCatalogAllByCompany(@NotNull @RequestParam String companyId) {
         if (companyId == null)
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        List<CatalogPresenter> listResult = catalogService.findAllByCompanyId(companyId);
+        List<CatalogPresenter> listResult = catalogService.findByCompanyAndStatus(companyId);
         if(listResult == null)
-            return new ResponseEntity(new MessagePresenter("Error: Catalogo no encontrado"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new MessagePresenter("Error: Catálogo no encontrado"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
     @GetMapping("/findAll")
-    public ResponseEntity<?> findCatalogAll() {
-        List<CatalogPresenter> listResult = catalogService.findAll();
+    public ResponseEntity<?> findCatalogAll(@NotNull @RequestParam List<String> idsCompanies) {
+        List<CatalogPresenter> listResult = catalogService.findAll(idsCompanies);
         return new ResponseEntity(listResult, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
-    @GetMapping("/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
+    @DeleteMapping("/delete")
     public void deleteCatalogById(@NotNull @RequestParam String catalogId) throws Exception {
         catalogService.deleteById(catalogId);
     }
