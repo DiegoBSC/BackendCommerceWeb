@@ -1,6 +1,9 @@
 package com.backen.multicommerce.repository;
 
 import com.backen.multicommerce.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
@@ -11,14 +14,13 @@ public interface ProductRepository extends CrudRepository<Product, UUID> {
 
 //    List<Product> findByCompany(Company company);
 
-//    @Query("SELECT c FROM Company c " +
-//            "where cast(c.user.id as string)  = coalesce(cast(:userId as string), cast(c.user.id as string)) " +
-//            "and c.status = 'ACT'" +
-//            "and ((cast(UPPER(c.nameCompany) as string) like " +
-//            "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(c.nameCompany as string)))) " +
-//            "or (cast(UPPER(c.identification) as string) like " +
-//            "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(c.identification as string)))))"
-//    )
-//    Page<Product> findByFilters(UUID userId, String mainFilter, Pageable pageable);
+    @Query("SELECT p FROM Product p " +
+            "where p.status = 'ACT' " +
+            "and ((cast(UPPER(p.name) as string) like " +
+            "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(p.name as string)))) " +
+            "or (cast(UPPER(p.code) as string) like " +
+            "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(p.code as string)))))"
+    )
+    Page<Product> findByFilters(String mainFilter, Pageable pageable);
 
 }

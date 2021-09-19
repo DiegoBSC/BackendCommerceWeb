@@ -27,7 +27,8 @@ public class CompanyController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
     @PostMapping("/create")
-    public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyPresenter companyPresenter, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<?> saveCompany(@Valid @RequestBody CompanyPresenter companyPresenter, BindingResult bindingResult)
+            throws Exception {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (companyService.existsByNameCompany(companyPresenter.getNameCompany(), companyPresenter.getId()))
@@ -42,7 +43,7 @@ public class CompanyController {
         if (companyId == null)
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         CompanyPresenter companyPresenter = companyService.findById(UUID.fromString(companyId));
-        if(companyPresenter == null)
+        if (companyPresenter == null)
             return new ResponseEntity(new MessagePresenter("Error: Empresa no encontrada"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(companyPresenter, HttpStatus.OK);
     }
@@ -54,7 +55,7 @@ public class CompanyController {
                                                   @RequestParam(required = false) String mainFilter,
                                                   @RequestParam(required = false) String userId) {
         Paginator listResult = companyService.findCompanyFilter(page, size, mainFilter, userId);
-        if(listResult == null)
+        if (listResult == null)
             return new ResponseEntity(new MessagePresenter("Error: Empresa no encontrada"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);
     }

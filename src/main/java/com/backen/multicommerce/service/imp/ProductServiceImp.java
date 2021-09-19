@@ -2,13 +2,20 @@ package com.backen.multicommerce.service.imp;
 
 import com.backen.multicommerce.entity.*;
 import com.backen.multicommerce.enums.EnumStatusGeneral;
+import com.backen.multicommerce.presenter.CompanyPresenter;
 import com.backen.multicommerce.presenter.ProductPresenter;
 import com.backen.multicommerce.repository.*;
 import com.backen.multicommerce.service.ProductService;
+import com.backen.multicommerce.utils.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,12 +38,27 @@ public class ProductServiceImp implements ProductService {
     TaxProductRepository taxProductRepository;
 
 
+//    @Override
+//    public List<ProductPresenter> findAll() {
+//        List<Product> list = (List<Product>) productRepository.findAll();
+//        return list.stream().map( (e)->
+//                getProductPresenterFromProduct(e)
+//        ).collect(Collectors.toList());
+//    }
+
+
     @Override
-    public List<ProductPresenter> findAll() {
-        List<Product> list = (List<Product>) productRepository.findAll();
-        return list.stream().map( (e)->
+    public Paginator findProductFilter(Integer page, Integer size, String mainFilter) {
+        Pageable paging = PageRequest.of(page, size, Sort.by("name"));
+
+        Page<Product> listQuery = productRepository.findByFilters(mainFilter, paging);
+
+        List<ProductPresenter> listPresenter = listQuery.getContent().stream().map((e) ->
                 getProductPresenterFromProduct(e)
         ).collect(Collectors.toList());
+
+        Paginator paginator = new Paginator(listQuery.getTotalPages(), listQuery.getTotalElements(), Set.of(listPresenter));
+        return paginator;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.backen.multicommerce.controller;
 import com.backen.multicommerce.presenter.MessagePresenter;
 import com.backen.multicommerce.presenter.ProductPresenter;
 import com.backen.multicommerce.service.ProductService;
+import com.backen.multicommerce.utils.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,21 +46,15 @@ public class ProductController {
         return new ResponseEntity(productPresenter, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
-    @GetMapping("/findAllByCompany")
-    public ResponseEntity<?> findProductAllByCompany(@NotNull @RequestParam String companyId) {
-        if (companyId == null)
-            return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
-        List<ProductPresenter> listResult = productService.findAll();
-        if(listResult == null)
-            return new ResponseEntity(new MessagePresenter("Error: Producto no encontrado"), HttpStatus.BAD_REQUEST);
-        return new ResponseEntity(listResult, HttpStatus.OK);
-    }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER', 'USER')")
-    @GetMapping("/findAll")
-    public ResponseEntity<?> findProductAll() {
-        List<ProductPresenter> listResult = productService.findAll();
+    @GetMapping("/list")
+    public ResponseEntity<?> findProduct(@NotNull @RequestParam Integer page,
+                                                  @NotNull @RequestParam Integer size,
+                                                  @RequestParam(required = false) String mainFilter) {
+        Paginator listResult = productService.findProductFilter(page, size, mainFilter);
+        if (listResult == null)
+            return new ResponseEntity(new MessagePresenter("Error: Productos no encontrados"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity(listResult, HttpStatus.OK);
     }
 
