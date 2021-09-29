@@ -15,3 +15,4 @@ INSERT INTO sec_users (id, created_date, "name", nick, email, "password", status
 INSERT INTO public.sec_user_rol (user_id, rol_id) values
 			((select id from sec_users where nick = 'Admin'),
 			 (select id from sec_roles where name = 'ROLE_ADMIN'));
+

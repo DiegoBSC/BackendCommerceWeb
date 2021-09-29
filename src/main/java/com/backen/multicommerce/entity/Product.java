@@ -36,13 +36,13 @@ public class Product {
     @NotNull
     @Enumerated(EnumType.STRING)
     private EnumStatusGeneral status;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "type_product_id", referencedColumnName = "id")
     private TypeProduct typeProduct;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "category_product_id", referencedColumnName = "id")
     private CategoryProduct categoryProduct;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "tax_product_id", referencedColumnName = "id")
     private TaxProduct taxProduct;
 }

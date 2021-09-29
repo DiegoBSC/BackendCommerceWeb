@@ -160,9 +160,6 @@
             <column name="tax_product_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-<!--            <column name="company_id" type="UUID">-->
-<!--                <constraints nullable="false"/>-->
-<!--            </column>-->
             <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
@@ -194,9 +191,6 @@
         <addForeignKeyConstraint baseTableName="pro_product" baseColumnNames="tax_product_id"
                                  constraintName="fk_tax_product_product"
                                  referencedTableName="pro_tax_product" referencedColumnNames="id"/>
-<!--        <addForeignKeyConstraint baseTableName="pro_product" baseColumnNames="company_id"-->
-<!--                                 constraintName="fk_company_product"-->
-<!--                                 referencedTableName="com_companies" referencedColumnNames="id"/>-->
         <createTable tableName="pro_catalogs_products">
             <column name="catalog_id" type="UUID">
                 <constraints nullable="false"/>
@@ -329,13 +323,13 @@
 
     <changeSet author="Diego Acosta" id="script03">
         <createTable tableName="sec_user_company">
-        <column name="user_id" type="UUID">
-            <constraints nullable="false"/>
-        </column>
-        <column name="company_id" type="UUID">
-            <constraints nullable="false"/>
-        </column>
-    </createTable>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
         <addPrimaryKey tableName="sec_user_company" columnNames="user_id,company_id"/>
         <addForeignKeyConstraint baseTableName="sec_user_company" baseColumnNames="user_id"
                                  constraintName="fk_user_id_company"
@@ -344,5 +338,32 @@
                                  constraintName="fk_company_id_users"
                                  referencedTableName="com_companies" referencedColumnNames="id"/>
     </changeSet>
+    <changeSet author="Diego Acosta" id="script04">
+        <createTable tableName="gen_setting_app">
+            <column name="id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="gen_setting_app" columnNames="id"/>
+    </changeSet>
+    <changeSet author="Diego Acosta" id="script05">
+        <modifyDataType
+                columnName="description"
+                newDataType="varchar(3000)"
+                tableName="pro_product"/>
+    </changeSet>
     <include file="data.sql"/>
+    <include file="data-config-app.sql"/>
 </databaseChangeLog>

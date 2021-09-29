@@ -29,11 +29,11 @@ public class ProductPresenter {
     private String image;
     private EnumStatusGeneral status;
     @NotNull
-    private String typeProductId;
+    private TypeProductPresenter typeProduct;
     @NotNull
-    private String categoryProductId;
+    private CategoryProductPresenter categoryProduct;
     @NotNull
-    private String taxProductId;
-    @NotNull
+    private TaxProductPresenter taxProduct;
+
     private String companyId;
 }

@@ -15,8 +15,7 @@ public interface ProductRepository extends CrudRepository<Product, UUID> {
 //    List<Product> findByCompany(Company company);
 
     @Query("SELECT p FROM Product p " +
-            "where p.status = 'ACT' " +
-            "and ((cast(UPPER(p.name) as string) like " +
+            "where ((cast(UPPER(p.name) as string) like " +
             "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(p.name as string)))) " +
             "or (cast(UPPER(p.code) as string) like " +
             "UPPER(coalesce(cast(CONCAT('%', :mainFilter,'%') as string), cast(p.code as string)))))"

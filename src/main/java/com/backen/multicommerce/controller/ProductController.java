@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,12 +28,14 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER')")
     @PostMapping("/create")
-    public ResponseEntity<?> saveProduct(@Valid @RequestBody ProductPresenter productPresenter, BindingResult bindingResult) {
+    public ResponseEntity<?> saveProduct(@Valid @RequestBody ProductPresenter productPresenter, BindingResult bindingResult,
+                                         @RequestParam(name="file", required=false) MultipartFile file,
+                                         @RequestParam(name="fileType", required = false) String fileType) throws IOException {
         if (bindingResult.hasErrors())
             return new ResponseEntity(new MessagePresenter("Datos inválidos"), HttpStatus.BAD_REQUEST);
         if (productPresenter.getId() == null &&  productService.existsByName(productPresenter.getName()))
             return new ResponseEntity(new MessagePresenter("El producto ya existe"), HttpStatus.BAD_REQUEST);
-        productService.save(productPresenter);
+        productService.save(productPresenter, file, fileType);
         return new ResponseEntity(new MessagePresenter("El producto fue guardado"), HttpStatus.CREATED);
     }
 
